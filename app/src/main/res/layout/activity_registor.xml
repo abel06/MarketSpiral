@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.abela.marketspiral.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                layout="@layout/header"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"></include>
+
+
+            <FrameLayout
+                android:id="@+id/card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="112dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_login"
+                    elevation="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_margin="@dimen/fab_margin"
+                    android:clickable="true"
+                    android:src="@drawable/ic_user"
+                    app:backgroundTint="#CA9A48"
+                    app:borderWidth="0dp" />
+
+
+            </FrameLayout>
+
+
+        </FrameLayout>
+
+        <include
+            layout="@layout/signup_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"></include>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

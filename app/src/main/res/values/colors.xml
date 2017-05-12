@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="viewBg">#48031c</color>
+    <color name="album_title">#4c4c4c</color>
+    <color name="colorPrimary_lite">#b4072e</color>
+    <color name="colorPrimary">#ca9a48</color>
+    <color name="colorPrimaryDark">#ae8643</color>
+    <color name="colorAccent">#CA9A48</color>
+    <color name="appBackground">#ffffff</color>
+
+    <color name="selected_tab">#001a1a</color>
+
+    <color name="tabTextColor">#8800ff</color>
+    <color name="tabSelectedTextColor">#ffffff</color>
+    <color name="red">#fd2200</color>
+
+    <color name="tab_background">#025353</color>
+
+    <color name="item_selected_background_color">#C7C7CC</color>
+
+    <color name="image_placeholder_background_color">#C7C7CC</color>
+
+    <color name="infowindow">#00c184</color>
+    <color name="infowindowShadow">#96212121</color>
+    <color name="infowindowTitle">#014040</color>
+    <color name="infowindowItemsAccent">#f4fd00</color>
+    <color name="infowindowAccent">#ffffff</color>
+
+    <color name="itemDetailWindowTitle">#014040</color>
+    <color name="itemDetailWindow">#FF014040</color>
+    <color name="itemDetailWindowText">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="dark_grey">#38484547</color>
+    <color name="cardFooter">#afffffff</color>
+    <color name="content_main">#a6a6a6</color>
+    <color name="item_sub_description">#a6a6a6</color>
+    <color name="transparent">#00a6a6a6</color>
+    <color name="transparenrt_sub">#17a6a6a6</color>
+    <color name="black_lite">#555555</color>
+</resources>
