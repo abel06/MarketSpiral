@@ -41,7 +41,7 @@
     <string name="loc_dialog_positive_btn">Open Location Settings</string>
     <string name="loc_retrive_failed">Location retrive failed</string>
 
-    <string name="facebook_app_id">1440399922687952</string>
+
     <string name="Bedroom">Bedroom</string>
     <string name="map_list_header_txt">Location</string>
     <string name="hint">Loc</string>
@@ -67,4 +67,10 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="added_on">Added On</string>
+
+
+    <string name="facebook_app_id">291954481255010</string>
+
+    <string name="fb_login_protocol_scheme">fb291954481255010</string>
+    <string name="logout">Logout</string>
 </resources>
