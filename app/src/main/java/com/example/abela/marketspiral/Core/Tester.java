@@ -14,12 +14,22 @@ import com.example.abela.marketspiral.R;
 import com.example.abela.marketspiral.Registor;
 import com.example.abela.marketspiral.Utility.Actions;
 import com.example.abela.marketspiral.interfaces.RemoteResponse;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import io.fabric.sdk.android.Fabric;
 
 public class Tester extends AppCompatActivity {
+
+    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
+    private static final String TWITTER_KEY = "v5oqtyAcoN3vCwsYTwjcFg9JW";
+    private static final String TWITTER_SECRET = "Lb0rVavootrruVY5ZVBu088uwCBGEbE6pmF5u4RKSelOSfKoCL";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        Fabric.with(this, new Twitter(authConfig));
         setContentView(R.layout.activity_tester);
         Button search= (Button) findViewById(R.id.searchbtn);
         Button descritpion = (Button) findViewById(R.id.descriptionbtn);

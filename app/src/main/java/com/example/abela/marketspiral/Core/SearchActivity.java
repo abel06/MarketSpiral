@@ -17,7 +17,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,21 +36,30 @@ import com.example.abela.marketspiral.CategoryActivity;
 import com.example.abela.marketspiral.Google.Geocode;
 import com.example.abela.marketspiral.Google.LocationSettingDialog;
 import com.example.abela.marketspiral.Google.PlayServiceCheck;
+import com.example.abela.marketspiral.Login;
 import com.example.abela.marketspiral.MainActivity;
 import com.example.abela.marketspiral.R;
 import com.example.abela.marketspiral.Utility.Actions;
 import com.example.abela.marketspiral.Utility.TextWriteRead;
 import com.example.abela.marketspiral.interfaces.RemoteResponse;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.plus.Plus;
+import com.twitter.sdk.android.Twitter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,9 +128,17 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
 //-----------------------------------------------------------------------------
     }
     synchronized void buildGoogleApiClient() {
-
         try{
+            GoogleSignInOptions gso = new GoogleSignInOptions.
+                    Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).
+                    requestScopes(new Scope(Scopes.PLUS_LOGIN)).
+                    requestEmail().
+                    build();
+
             mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .enableAutoManage(this, this).
+                    addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .addApi(Plus.API)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API).build();
@@ -128,7 +150,10 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
         }
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Location loc=LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);;
+        Location loc=null;
+             if(mGoogleApiClient!=null){
+                loc =LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);;
+             }
              if (loc != null) {
                  geocode(loc);
              } else {
@@ -392,7 +417,49 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
     } //when geocode finished set the data to autocomplate Edit text
 
 //================================================================================================================================================
-                                                                           //Not used methods  below this
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.menu_main2, menu);
+    return true;
+}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                logout();
+                Intent login=new Intent(SearchActivity.this, Login.class);
+                startActivity(login);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }//Not used methods  below this
+    void logout(){
+        //logout from facebook
+        LoginManager.getInstance().logOut();
+
+        //logout from twitter
+        CookieSyncManager.createInstance(this);
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.removeSessionCookie();
+        Twitter.getSessionManager().clearActiveSession();
+        Twitter.logOut();
+
+        //logout from google
+        revokeAccess();
+    }
+    private void revokeAccess() {
+        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        // ...
+                    }
+                });
+    }
+
     @Override
     public void onLocationChanged(Location location) {
 
