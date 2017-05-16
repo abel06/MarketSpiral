@@ -428,9 +428,10 @@ public boolean onCreateOptionsMenu(Menu menu) {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_logout:
-                logout();
+
                 Intent login=new Intent(SearchActivity.this, Login.class);
                 startActivity(login);
+                logout();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -449,6 +450,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
 
         //logout from google
         revokeAccess();
+        finish();
     }
     private void revokeAccess() {
         Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(

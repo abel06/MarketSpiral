@@ -70,7 +70,6 @@
 
 
     <string name="facebook_app_id">291954481255010</string>
-
     <string name="fb_login_protocol_scheme">fb291954481255010</string>
     <string name="logout">Logout</string>
 </resources>

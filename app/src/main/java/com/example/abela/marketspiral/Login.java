@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -52,6 +53,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.ActivityRecognition;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.plus.Plus;
+import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
@@ -71,7 +73,9 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
     private ProfileTracker profileTracker;
     private CallbackManager callbackManager;
     private TwitterLoginButton twitterLoginButton;
+    TwitterSession twitter_session;
     GoogleApiClient mGoogleApiClient;
+    GoogleSignInAccount google_session;
 
 
     //Facebook login button
@@ -79,14 +83,14 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
         @Override
         public void onSuccess(LoginResult loginResult) {
             Profile profile = Profile.getCurrentProfile();
-            nextActivity();
+          //  nextActivity();
         }
         @Override
         public void onCancel() {        }
         @Override
         public void onError(FacebookException e) {      }
     };
-    private PendingIntent activityDetectionPendingIntent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +100,8 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
         fabSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Intent signUp =new Intent(Login.this,Registor.class);
-               // Login.this.startActivity(signUp);
+               Intent signUp =new Intent(Login.this,Registor.class);
+                Login.this.startActivity(signUp);
             }
         });
 
@@ -125,13 +129,14 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
         accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
+                updateWithToken(newToken);
             }
         };
-
+        updateWithToken(AccessToken.getCurrentAccessToken());
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-                nextActivity();
+              //  nextActivity();
             }
         };
         accessTokenTracker.startTracking();
@@ -142,9 +147,7 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
         callback = new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                AccessToken accessToken = loginResult.getAccessToken();
-                Profile profile = Profile.getCurrentProfile();
-                nextActivity();
+
                 Toast.makeText(getApplicationContext(), "Logging in...", Toast.LENGTH_SHORT).show();    }
 
             @Override
@@ -159,6 +162,7 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
         };
         loginButton.setReadPermissions("user_friends");
         loginButton.registerCallback(callbackManager, callback);
+
       //----------------------------------------------------------------------
         twitterLoginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
         twitterLoginButton.setCallback(new Callback<TwitterSession>() {
@@ -166,11 +170,11 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
             public void success(Result<TwitterSession> result) {
                 // The TwitterSession is also available through:
                 // Twitter.getInstance().core.getSessionManager().getActiveSession()
-                TwitterSession session = result.data;
+                  twitter_session = result.data;
                 // TODO: Remove toast and use the TwitterSession's userID
                 // with your app's user model
-                String msg = "@" + session.getUserName() + " logged in! (#" + session.getUserId() + ")";
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+              //  String msg = "@" + session.getUserName() + " logged in! (#" + session.getUserId() + ")";
+                ///Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
                 nextActivity();
             }
 
@@ -205,6 +209,32 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
                 }
             }
         });
+    }
+    private void updateWithToken(AccessToken currentAccessToken) {
+        twitter_session= Twitter.getInstance().core.getSessionManager().getActiveSession();
+
+
+        int SPLASH_TIME_OUT=1000;
+        if (currentAccessToken != null|twitter_session!=null|google_session!=null) {
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                  nextActivity();
+
+                    finish();
+                }
+            }, SPLASH_TIME_OUT);
+        } else {
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    //finish();
+                }
+            }, SPLASH_TIME_OUT);
+        }
     }
     synchronized void buildGoogleApiClient() {
 
@@ -267,12 +297,12 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
                 GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
                 Log.d("ab","result "+result);
             if (result.isSuccess()) {
-                GoogleSignInAccount acct = result.getSignInAccount();
+               google_session = result.getSignInAccount();
 
                 // Get account information
-                String mFullName = acct.getDisplayName();
-                String mEmail = acct.getEmail();
-                nextActivity();
+                String mFullName = google_session.getDisplayName();
+                String mEmail = google_session.getEmail();
+                 nextActivity();
             }
     }catch (Exception e){
                 Log.d("ab","result "+e);

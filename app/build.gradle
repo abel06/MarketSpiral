@@ -51,6 +51,10 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile('com.twitter.sdk.android:twitter:2.3.2@aar') {
+        transitive = true;
+    }
+
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.android.support:appcompat-v7:25.0.2'
     compile 'com.android.support:design:25.2.0'
@@ -67,8 +71,5 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.daimajia.slider:library:1.1.5@aar'
     testCompile 'junit:junit:4.12'
-    compile('com.twitter.sdk.android:twitter:2.3.2@aar') {
-        transitive = true;
-    }
-    apply plugin: 'com.google.gms.google-services'
 }
+apply plugin: 'com.google.gms.google-services'
