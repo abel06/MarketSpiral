@@ -73,7 +73,7 @@ public class Tester extends AppCompatActivity {
         main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainIntent = new Intent(Tester.this, MainActivity.class);
+                Intent mainIntent = new Intent(Tester.this, AddItem.class);
                 //myIntent.putStringArrayListExtra("backFetchList", backFetchList);
                 Tester.this.startActivity(mainIntent);
             }
