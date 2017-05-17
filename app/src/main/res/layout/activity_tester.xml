@@ -10,13 +10,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <Button
-        android:id="@+id/mainbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Main"
-        tools:layout_editor_absoluteX="44dp"
-        tools:layout_editor_absoluteY="197dp" />
+        <Button
+            android:id="@+id/mainbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Item"
+            tools:layout_editor_absoluteX="44dp"
+            tools:layout_editor_absoluteY="197dp" />
 
     <Button
         android:id="@+id/descriptionbtn"
