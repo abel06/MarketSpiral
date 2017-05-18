@@ -5,7 +5,7 @@ package com.example.abela.marketspiral.Utility;
  * This class stores all the possible actions that can be performed with the remote task
  */
 public final class Actions {
-
+    
     public static final int USER_REGISTRATION = 0;
     public static final int USER_LOGIN = 1;
     public static final int NEW_ITEM = 2;

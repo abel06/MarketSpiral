@@ -363,18 +363,6 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
 
     }
 
-    @Override
-    public void registerWithExternal(int id) {
-
-        if( id >0 ){
-            nextActivity();
-        }else{
-            //TODO error
-        }
-
-
-    }
-
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
