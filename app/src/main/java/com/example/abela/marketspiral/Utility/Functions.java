@@ -14,15 +14,23 @@ public final class Functions {
 
         for (String key: data.keySet()) {
 
-            if(result.isEmpty()) {
-                result += key + "=" +data.get(key);
-            }else{
-                result +="&"+key+"="+data.get(key);
+            String value = data.get(key);
+            if(!value.isEmpty()) {
+                if (result.isEmpty()) {
+                    result += key + "=" + data.get(key);
+                } else {
+                    result += "&" + key + "=" + data.get(key);
+                }
             }
 
         }
 
         return result;
+    }
+
+
+    public static HashMap<String,String> RetrieveDataFromUI(){
+        return null;
     }
 
 }
