@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.abela.marketspiral.CategoryActivity;
+import com.example.abela.marketspiral.ImageUpload;
 import com.example.abela.marketspiral.Login;
 import com.example.abela.marketspiral.MainActivity;
 import com.example.abela.marketspiral.R;
@@ -73,7 +74,7 @@ public class Tester extends AppCompatActivity {
         main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainIntent = new Intent(Tester.this, AddItem.class);
+                Intent mainIntent = new Intent(Tester.this, ImageUpload.class);
                 //myIntent.putStringArrayListExtra("backFetchList", backFetchList);
                 Tester.this.startActivity(mainIntent);
             }

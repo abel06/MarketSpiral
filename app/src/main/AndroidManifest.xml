@@ -13,6 +13,10 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -73,6 +77,8 @@
             android:name="io.fabric.ApiKey"
             android:value="bb12e5b15f92c9b1c95d5ba4aab6e2f2006659b3" />
 
+        <activity android:name=".Core.AddItem" />
+        <activity android:name=".ImageUpload"></activity>
     </application>
 
 </manifest>
