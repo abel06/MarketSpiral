@@ -1,29 +1,21 @@
 package com.example.abela.marketspiral;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.abela.marketspiral.Core.RemoteTask;
 import com.example.abela.marketspiral.Core.SearchActivity;
+import com.example.abela.marketspiral.Core.User;
 import com.example.abela.marketspiral.Google.PlayServiceCheck;
 import com.example.abela.marketspiral.Utility.Actions;
 import com.example.abela.marketspiral.interfaces.RemoteResponse;
@@ -35,8 +27,6 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
-import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -47,11 +37,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.ActivityRecognition;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.plus.Plus;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
@@ -59,16 +45,13 @@ import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
 public class Login extends AppCompatActivity implements RemoteResponse, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
     private static final int RC_SIGN_IN = 0;
     Context mContext;
 
-
+    private Object user_data;
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
     private CallbackManager callbackManager;
@@ -209,6 +192,7 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
                 }
             }
         });
+
     }
     private void updateWithToken(AccessToken currentAccessToken) {
         twitter_session= Twitter.getInstance().core.getSessionManager().getActiveSession();
@@ -264,10 +248,17 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
     private void nextActivity(){
         //if(profile != null){
             Intent search = new Intent(Login.this, SearchActivity.class);
-           /* main.putExtra("name", profile.getFirstName());
-            main.putExtra("surname", profile.getLastName());
-            main.putExtra("imageUrl", profile.getProfilePictureUri(200,200).toString());*/
-            startActivity(search);
+
+        Bundle data= search.getExtras();
+
+
+
+        for (String key: ((HashMap<String,String>) user_data).keySet()
+             ) {
+            data.putString(key,((HashMap<String, String>) user_data).get(key));
+        }
+
+        startActivity(search);
        // }
     }
     @Override
@@ -291,6 +282,7 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
         Log.d("ab","result "+requestCode);
         //twitter Login
         twitterLoginButton.onActivityResult(requestCode, responseCode, intent);
+
         //google Login
         if (requestCode == RC_SIGN_IN) {
             try {
@@ -300,9 +292,20 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
                google_session = result.getSignInAccount();
 
                 // Get account information
-                String mFullName = google_session.getDisplayName();
-                String mEmail = google_session.getEmail();
-                 nextActivity();
+                HashMap<String,String> collected_data= new HashMap<>();
+
+
+                String full_name =google_session.getDisplayName();
+                String email = google_session.getEmail();
+
+
+                collected_data.put("full_name", full_name);
+                collected_data.put("email",email);
+
+                user_data = collected_data;
+
+                new RemoteTask(Actions.REGISTER_WITH_EXTERNAL_SERVICES,user_data,this,mContext).execute();
+
             }
     }catch (Exception e){
                 Log.d("ab","result "+e);
@@ -318,12 +321,22 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
     @Override
     public void loginFinished(int value) {
 
+        nextActivity();
+
     }
 
     @Override
-    public void registerFinished(int value) {
+    public void registerFinished(int value, boolean externalService) {
 
-    }
+        if(externalService && value == 1){
+            nextActivity();
+        }else if ( value==0) {
+            Toast.makeText(getApplicationContext(), "Registration done, please go ahead and login with the credentials", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+        }
+
+}
 
     @Override
     public void searchFinished(int value, Object result) {
@@ -347,6 +360,18 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
 
     @Override
     public void searchItem(int id) {
+
+    }
+
+    @Override
+    public void registerWithExternal(int id) {
+
+        if( id >0 ){
+            nextActivity();
+        }else{
+            //TODO error
+        }
+
 
     }
 
