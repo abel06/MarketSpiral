@@ -8,6 +8,8 @@ import java.util.HashMap;
 
 public final class Functions {
 
+
+    /**This method concatenate data in the URL*/
     public static String ConcatenateForServer(HashMap<String,String> data){
 
         String result = "";
@@ -29,6 +31,7 @@ public final class Functions {
     }
 
 
+    /**TODO */
     public static HashMap<String,String> RetrieveDataFromUI(){
         return null;
     }
