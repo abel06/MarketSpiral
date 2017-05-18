@@ -119,6 +119,7 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
 
             case Actions.REGISTER_WITH_EXTERNAL_SERVICES: return userRegistration();
 
+
         }
 
         return -1;
