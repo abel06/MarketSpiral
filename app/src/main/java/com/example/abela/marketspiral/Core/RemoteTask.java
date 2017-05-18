@@ -27,6 +27,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.jar.Pack200;
 
 /**
  * Created by HaZe on 5/2/17.
@@ -37,13 +38,14 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
     ProgressDialog progressDialog;
     /**This interface is used to notify when a task finish*/
     private RemoteResponse delegate;
-    Context mContext;
+
+    private Context mContext;
 
     /**This is the current action to perform @{@link Actions}**/
     private int ACTION;
 
     private Object result;
-   // private Object responce;
+    // private Object responce;
     /** Here is where the data is stored (Using Objects doesn't not matter if are strings or Item or whatever)*/
     private Object args;
 
@@ -56,6 +58,14 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
 
     }
 
+    public RemoteTask(int ACTION, Object args, RemoteResponse delegate){
+
+        this.ACTION = ACTION;
+        this.args = args;
+        this.delegate = delegate;
+        this.mContext=null;
+
+    }
 
     public RemoteResponse getDelegate() {
         return delegate;
@@ -83,8 +93,11 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
 
     @Override
     protected void onPreExecute() {
-        progressDialog= ProgressDialog.show((Context) delegate, "","Please Wait", true);
         super.onPreExecute();
+
+        progressDialog= ProgressDialog.show((Context) delegate, "","Please Wait", true);
+
+
     }
 
     @Override
@@ -102,7 +115,9 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
 
             case Actions.SEARCH_ITEM: return searchItem();
 
-             case Actions.GEOCDE_LOCATION: return geocode();
+            case Actions.GEOCDE_LOCATION: return geocode();
+
+            case Actions.REGISTER_WITH_EXTERNAL_SERVICES: return userRegistration();
 
         }
 
@@ -110,15 +125,18 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
     }
 
 
-
     @Override
     protected void onPostExecute(Integer integer) {
         progressDialog.dismiss();
         Log.d("ab","   "+integer);
 
+
+        //free the data structure --> not sure if is 'nice' to do in that manner...
+        args = null;
+
         switch (ACTION){
 
-            case Actions.USER_REGISTRATION: delegate.registerFinished(integer);break;
+            case Actions.USER_REGISTRATION: delegate.registerFinished(integer,false);break;
 
             case Actions.USER_LOGIN : delegate.loginFinished(integer); break;
 
@@ -130,6 +148,8 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
                 break;
             case Actions.GEOCDE_LOCATION: delegate.geocodeFinished(integer,result);
                 break;
+
+            case Actions.REGISTER_WITH_EXTERNAL_SERVICES: delegate.registerFinished(integer,true); break;
         }
 
     }
@@ -148,12 +168,10 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
 
         HttpURLConnection connection = null;
         BufferedReader reader = null;
-        String response ="";
-        // String Search="https://api.data.gov/nrel/alt-fuel-stations/v1/nearest.json?api_key=5cwCk6nhFAkPu9BU3EyxafUN5jqytIGvGD6R4kcO&location=Denver+CO";
-        InputStream inputStream = null;
+        int server_response=-1;
         //--------------------------------------------------------------------
         //-----------------------------------------------------------------------------------------------
-        URL url = null;
+        URL url ;
         try {
             //Login php script location
             url = new URL(ServerInfo.DB_URL+ServerInfo.REGISTER);
@@ -181,53 +199,37 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
             }
-            response = sb.toString();
+            server_response = Integer.parseInt(sb.toString());
 
-        } catch (MalformedURLException e) {
+        }  catch (IOException e) {
             e.printStackTrace();
-            return 0;
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-            return 0;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return 0;
+            return server_response;
         } finally {
-            //                reader.close();
-            //                inputStream.close();
             connection.disconnect();
         }
 
-        return 1;
+        return server_response;
 
     }
 
     private int userLogin(){
         HttpURLConnection connection = null;
         BufferedReader reader = null;
-        String response ="";
-        // String Search="https://api.data.gov/nrel/alt-fuel-stations/v1/nearest.json?api_key=5cwCk6nhFAkPu9BU3EyxafUN5jqytIGvGD6R4kcO&location=Denver+CO";
-        InputStream inputStream = null;
+        int server_response=-1;
         //----------------------------------------ad    ---------------------------
 
         //-----------------------------------------------------------------------------------------------
-        URL url = null;
+        URL url;
         try {
             //Login php script location
             url = new URL(ServerInfo.DB_URL+ServerInfo.LOGIN);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");      //Data sent via POST method
 
-
             connection.setDoOutput(true);
             connection.setConnectTimeout(7000);
 
             OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
-
-//            HashMap<String,String> user_data = hashMaps[0]; //Collect data from input
-//
-//            String data = "username="+user_data.get("username")+"&password="+user_data.get("password"); // Concatenate data into a request
-
 
             HashMap<String,String> user_data = (HashMap<String, String>) args;
 
@@ -241,24 +243,16 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
             }
-            response = sb.toString();
+            server_response = Integer.parseInt(sb.toString());
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return 0;
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-            return 0;
         } catch (IOException e) {
             e.printStackTrace();
-            return 0;
+            return server_response;
         } finally {
-            //                reader.close();
-//                inputStream.close();
             connection.disconnect();
         }
 
-        return 1;
+        return server_response;
     }
 
     private Integer searchItem() {
@@ -281,11 +275,6 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
 
             OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
 
-//            HashMap<String,String> user_data = hashMaps[0]; //Collect data from input
-//
-//            String data = "username="+user_data.get("username")+"&password="+user_data.get("password"); // Concatenate data into a request
-
-
             HashMap<String,String> search_data = (HashMap<String, String>) args;
 
             wr.write(Functions.ConcatenateForServer(search_data));
@@ -300,8 +289,7 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
             }
             result = sb.toString();
 
-            //TextWriteRead textWriteRead =new TextWriteRead();
-           // textWriteRead.writeToFile(response,);
+
         } catch (MalformedURLException e) {
             Toast.makeText(mContext,"No Internet check out your connection setting",Toast.LENGTH_LONG);
             e.printStackTrace();
@@ -315,7 +303,8 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
         } finally {
             //                reader.close();
 //                inputStream.close();
-            connection.disconnect();
+            if(connection != null)
+                connection.disconnect();
         }
 
         return 1;
@@ -333,6 +322,6 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
             e.printStackTrace();
         }
 
-       return 0;
+        return 0;
     }
 }
