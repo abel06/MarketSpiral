@@ -10,6 +10,7 @@ public interface RemoteResponse {
     void registerFinished(int value,boolean externalService);
     void searchFinished(int value, Object result);
     void geocodeFinished(int id,Object result);
+
     void itemAdded(int id);
     void itemRemoved(int id);
     void searchItem(int id);
