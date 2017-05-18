@@ -6,14 +6,28 @@ package com.example.abela.marketspiral.interfaces;
  */
 public interface RemoteResponse {
 
-    void loginFinished(int value);
+
+
+    /**This method is called once the login have been performed, it returns the current user id (if registered)*/
+    void loginFinished(int id);
+
+    /**This method is called after the user registration, it returns 0 if everything went right , 1 if inserted data is already registered, -1 if there are errors*/
     void registerFinished(int value,boolean externalService);
+
+    /**  --- ABEL PUT TEXT HERE ---    */
     void searchFinished(int value, Object result);
+
+    /**  --- ABEL PUT TEXT HERE ---    */
     void geocodeFinished(int id,Object result);
+
+    /**This method is called when a new item have been added into the DB, if no error arises the id has the item id, -1 otherwise*/
     void itemAdded(int id);
+
+    /**This method is called when an item have been removed into the DB, if no error arises the id has the item id, -1 otherwise*/
     void itemRemoved(int id);
+
+    /**  --- ABEL PUT TEXT HERE ---    */
     void searchItem(int id);
-    void registerWithExternal(int id);
 
 
 }
