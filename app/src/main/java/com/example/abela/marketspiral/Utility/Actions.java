@@ -12,4 +12,5 @@ public final class Actions {
     public static final int REMOVE_ITEM = 3;
     public static final int SEARCH_ITEM = 4;
     public static final int GEOCDE_LOCATION = 5;
+    public static final int REGISTER_WITH_EXTERNAL_SERVICES = 6;
 }
