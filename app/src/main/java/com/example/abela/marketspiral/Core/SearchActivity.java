@@ -503,7 +503,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
     }
 
     @Override
-    public void registerFinished(int value) {
+    public void registerFinished(int value,boolean externalService) {
 
     }
 
@@ -519,6 +519,11 @@ public boolean onCreateOptionsMenu(Menu menu) {
 
     @Override
     public void searchItem(int id) {
+    }
+
+    @Override
+    public void registerWithExternal(int id) {
+
     }
 
 
