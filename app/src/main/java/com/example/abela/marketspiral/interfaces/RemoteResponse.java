@@ -7,7 +7,6 @@ package com.example.abela.marketspiral.interfaces;
 public interface RemoteResponse {
 
 
-
     /**This method is called once the login have been performed, it returns the current user id (if registered)*/
     void loginFinished(int id);
 

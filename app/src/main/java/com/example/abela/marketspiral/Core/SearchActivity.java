@@ -2,7 +2,6 @@ package com.example.abela.marketspiral.Core;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Location;
@@ -14,8 +13,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,18 +23,13 @@ import android.webkit.CookieSyncManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.abela.marketspiral.CategoryActivity;
-import com.example.abela.marketspiral.Google.Geocode;
 import com.example.abela.marketspiral.Google.LocationSettingDialog;
 import com.example.abela.marketspiral.Google.PlayServiceCheck;
 import com.example.abela.marketspiral.Login;
-import com.example.abela.marketspiral.MainActivity;
 import com.example.abela.marketspiral.R;
 import com.example.abela.marketspiral.Utility.Actions;
 import com.example.abela.marketspiral.Utility.TextWriteRead;
@@ -57,7 +49,6 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.plus.Plus;
 import com.twitter.sdk.android.Twitter;
 
@@ -363,10 +354,10 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
     }                           //search button   check text boxes and location the start new activity with given data
 
     public void search(HashMap<String,String> data) {
-        new RemoteTask(Actions.SEARCH_ITEM,data,this,mContext).execute();  //search method  will be called from addListnerOnButton method
+        new RemoteTask(Actions.SEARCH_ITEM,data,this,mContext,false).execute();  //search method  will be called from addListnerOnButton method
     }
     public void geocode(Location loc){   //geocode from givin location
-        new RemoteTask(Actions.GEOCDE_LOCATION,loc,this,mContext).execute();
+        new RemoteTask(Actions.GEOCODE_LOCATION,loc,this,mContext,false).execute();
     };                                                              ///geocode
     //--------------------------------------------------------------------------
     @Override
@@ -520,10 +511,6 @@ public boolean onCreateOptionsMenu(Menu menu) {
     public void searchItem(int id) {
     }
 
-    @Override
-    public void registerWithExternal(int id) {
-
-    }
 
 
 //-----------------------------------------------------------------------
