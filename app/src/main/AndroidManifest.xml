@@ -77,8 +77,10 @@
             android:name="io.fabric.ApiKey"
             android:value="bb12e5b15f92c9b1c95d5ba4aab6e2f2006659b3" />
 
-        <activity android:name=".Core.AddItem" />
-        <activity android:name=".ImageUpload"></activity>
+        <activity android:name=".ADD.AddItem" />
+        <activity android:name=".ImageUpload" />
+        <activity android:name=".ADD.AddImage" />
+        <activity android:name=".ADD.AddLocation"></activity>
     </application>
 
 </manifest>
