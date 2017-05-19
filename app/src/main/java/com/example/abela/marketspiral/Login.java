@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.Toast;
 import com.example.abela.marketspiral.Core.RemoteTask;
 import com.example.abela.marketspiral.Core.SearchActivity;
-import com.example.abela.marketspiral.Core.User;
 import com.example.abela.marketspiral.Google.PlayServiceCheck;
 import com.example.abela.marketspiral.Utility.Actions;
 import com.example.abela.marketspiral.interfaces.RemoteResponse;

@@ -11,15 +11,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.abela.marketspiral.CategoryActivity;
-import com.example.abela.marketspiral.ImageUpload;
+import com.example.abela.marketspiral.ADD.AddItem;
 import com.example.abela.marketspiral.Login;
-import com.example.abela.marketspiral.MainActivity;
 import com.example.abela.marketspiral.R;
 
 import com.example.abela.marketspiral.Registor;
-import com.example.abela.marketspiral.Utility.Actions;
-import com.example.abela.marketspiral.interfaces.RemoteResponse;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
@@ -74,7 +70,7 @@ public class Tester extends AppCompatActivity {
         main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainIntent = new Intent(Tester.this, ImageUpload.class);
+                Intent mainIntent = new Intent(Tester.this, AddItem.class);
                 //myIntent.putStringArrayListExtra("backFetchList", backFetchList);
                 Tester.this.startActivity(mainIntent);
             }

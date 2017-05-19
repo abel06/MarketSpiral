@@ -13,10 +13,10 @@ public interface RemoteResponse {
     /**This method is called after the user registration, it returns 0 if everything went right , 1 if inserted data is already registered, -1 if there are errors*/
     void registerFinished(int value,boolean externalService);
 
-    /**  --- ABEL PUT TEXT HERE ---    */
+    /**  --- This method is called when the item is responded from server  ---    */
     void searchFinished(int value, Object result);
 
-    /**  --- ABEL PUT TEXT HERE ---    */
+    /**  --- This method is called when we geocode from lat and lng and when it finished geocoding ---    */
     void geocodeFinished(int id,Object result);
 
     /**This method is called when a new item have been added into the DB, if no error arises the id has the item id, -1 otherwise*/
@@ -25,7 +25,7 @@ public interface RemoteResponse {
     /**This method is called when an item have been removed into the DB, if no error arises the id has the item id, -1 otherwise*/
     void itemRemoved(int id);
 
-    /**  --- ABEL PUT TEXT HERE ---    */
+    /**  --- This method is called to start the method search in RemotTask class ---    */
     void searchItem(int id);
 
 

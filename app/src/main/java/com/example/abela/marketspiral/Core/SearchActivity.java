@@ -137,7 +137,6 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
         }
     }
     public void getLastknownLocation(){
-
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
         }
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);

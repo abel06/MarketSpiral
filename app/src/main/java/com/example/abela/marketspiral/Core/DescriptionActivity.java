@@ -153,13 +153,13 @@ public class DescriptionActivity extends AppCompatActivity implements OnMapReady
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+         mMap = googleMap;
          mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         MarkerOptions markerOpt =new MarkerOptions()
                 .position(new LatLng(lat,lng))
                 .anchor(.5f,.5f);
 
-        Marker marker=mMap.addMarker(markerOpt);
+        final Marker marker=mMap.addMarker(markerOpt);
 
         CameraPosition cameraPosition=new CameraPosition.Builder().target(new LatLng(lat,lng))
                 .zoom(14).tilt(30).build();
