@@ -4,7 +4,7 @@ xmlns:card_view="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context="com.example.abela.marketspiral.Core.AddItem"
+tools:context="com.example.abela.marketspiral.ADD.AddItem"
     >
 
 <LinearLayout
@@ -33,13 +33,12 @@ tools:context="com.example.abela.marketspiral.Core.AddItem"
             android:textColor="#CA9A48" />
 
         <Spinner
-            android:id="@+id/home_spinner_category"
+            android:id="@+id/spinner_Add_Category"
+            style="@style/spinner_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/back"
-            style="@style/spinner_style"
-            />
+            android:background="@drawable/back" />
 
     </LinearLayout>
 
@@ -86,13 +85,12 @@ tools:context="com.example.abela.marketspiral.Core.AddItem"
 
         <EditText
             android:id="@+id/buildup_et"
-            style="@style/text_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            style="@style/text_style"
             android:ems="10"
-            android:hint="1500 sq/m"
-            android:inputType="textPersonName" />
+            android:inputType="number" />
 
     </LinearLayout>
 
@@ -112,13 +110,14 @@ tools:context="com.example.abela.marketspiral.Core.AddItem"
             android:textColor="#CA9A48" />
 
         <EditText
-            android:id="@+id/home_price"
+            android:id="@+id/price_et"
             style="@style/text_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:inputType="number"
             android:hint="700 "
-            android:inputType="textPersonName" />
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -136,7 +135,7 @@ tools:context="com.example.abela.marketspiral.Core.AddItem"
             android:textColor="#CA9A48" />
 
         <Spinner
-            android:id="@+id/home_bedrooms"
+            android:id="@+id/spinner_Add_Bedroom"
             style="@style/spinner_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -144,13 +143,6 @@ tools:context="com.example.abela.marketspiral.Core.AddItem"
             android:background="@drawable/back" />
 
     </LinearLayout>
-
-    <Spinner
-        android:id="@+id/home_spinner_image_tag"
-        style="@style/spinner_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/back" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -168,31 +160,36 @@ tools:context="com.example.abela.marketspiral.Core.AddItem"
             android:textColor="#CA9A48" />
 
         <EditText
-            android:id="@+id/Description"
+            android:id="@+id/description_et"
             style="@style/text_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textMultiLine" />
+
+
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/map_container"
-        android:layout_width="match_parent"
-        android:layout_height="120dp">
 
-        <ImageView
-            android:id="@+id/camera_btn"
-            android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/next_btn"
+            style="@style/text_style"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="18dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="12dp"
-            card_view:srcCompat="@drawable/ic_camera" />
-    </RelativeLayout>
+            android:layout_marginBottom="10dp"
+            android:background="#CA9A48"
+            android:text="Next"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
 </LinearLayout>
 </ScrollView>
