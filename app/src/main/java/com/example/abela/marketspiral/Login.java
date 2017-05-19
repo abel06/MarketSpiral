@@ -253,10 +253,10 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
 
 
 
-        for (String key: ((HashMap<String,String>) user_data).keySet()
-             ) {
-            data.putString(key,((HashMap<String, String>) user_data).get(key));
-        }
+//        for (String key: ((HashMap<String,String>) user_data).keySet()
+//             ) {
+//            data.putString(key,((HashMap<String, String>) user_data).get(key));
+//        }
 
         startActivity(search);
        // }
@@ -304,7 +304,7 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
 
                 user_data = collected_data;
 
-                new RemoteTask(Actions.REGISTER_WITH_EXTERNAL_SERVICES,user_data,this,mContext).execute();
+                new RemoteTask(Actions.USER_REGISTRATION,user_data,this,mContext,true).execute();
 
             }
     }catch (Exception e){
@@ -316,7 +316,7 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
     }
     public void login(HashMap<String,String> data) {
 
-        new RemoteTask(Actions.USER_LOGIN,data,this,mContext).execute();
+        new RemoteTask(Actions.USER_LOGIN,data,this,mContext,false).execute();
     }
     @Override
     public void loginFinished(int value) {
