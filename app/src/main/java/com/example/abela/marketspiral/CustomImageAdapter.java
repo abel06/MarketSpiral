@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-
 import com.example.abela.marketspiral.Utility.ImageInfo;
 import java.util.ArrayList;
 
@@ -64,12 +63,9 @@ public class CustomImageAdapter extends BaseAdapter {
             gridView = inflater.inflate(R.layout.grid_item, null);
 
             ImageView imageView = (ImageView) gridView.findViewById(R.id.image_grid_item);
-
-            Log.d("TEST", "position" + i+"image path" + images_info.get(i).getPath() + " image name " + images_info.get(i).getName());
             Bitmap bt = decodeSampledBitmapFromUri(images_info.get(i).getPath(), 200, 200);
 
             imageView.setImageBitmap(bt);
-//            imageView.setImageResource(R.drawable.com_facebook_favicon_blue);
 //        }else{
 //            gridView = view;
 //        }
