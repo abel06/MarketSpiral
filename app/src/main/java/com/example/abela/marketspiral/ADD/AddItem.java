@@ -50,7 +50,7 @@ public class AddItem extends AppCompatActivity {
         final EditText  buildup_et= (EditText) findViewById(R.id.buildup_et);
         final EditText  price_et= (EditText) findViewById(R.id.price_et);
         final EditText  description_et= (EditText) findViewById(R.id.description_et);
-
+        final EditText  date = (EditText) findViewById(R.id.date);
 
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +59,7 @@ public class AddItem extends AppCompatActivity {
                 final String buildup=buildup_et.getText().toString();
                 final String price=price_et.getText().toString();
                 final String description=description_et.getText().toString();
+                final String date_value = date.getText().toString();
 
                 Log.d("ab",""+title+buildup+price+description);
                 Intent add_location=new Intent(AddItem.this,AddLocation.class);
@@ -82,6 +83,7 @@ public class AddItem extends AppCompatActivity {
                 add_location.putExtra("buildup",buildup);
                 add_location.putExtra("price",price);
                 add_location.putExtra("description",description);
+                add_location.putExtra("date",date_value);
 
                 AddItem.this.startActivity(add_location);}
 
@@ -96,7 +98,7 @@ public class AddItem extends AppCompatActivity {
             }
         });
         */
-        //-----------------------------------------------
+//        //-----------------------------------------------
     }
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -138,8 +140,8 @@ public class AddItem extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-           // ImageView mImageView;
-           // mImageView.setImageBitmap(imageBitmap);
+            ImageView mImageView = null;
+            mImageView.setImageBitmap(imageBitmap);
         }
     }
 
