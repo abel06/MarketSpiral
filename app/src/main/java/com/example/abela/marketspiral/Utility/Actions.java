@@ -12,4 +12,5 @@ public final class Actions {
     public static final String REMOVE_ITEM = "remove_item.php";
     public static final String SEARCH_ITEM="search_item.php";
     public static final String GEOCODE_LOCATION = "geocode_location";
+    public static final String UPLOAD_IMAGE = "upload_image.php";
 }
