@@ -8,8 +8,8 @@ android:layout_height="match_parent">
         android:id="@+id/image_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/upload_image"
-        android:numColumns="2"
+        android:layout_above="@+id/upload_image" />
+        <!--android:numColumns=""-->
         android:layout_below="@+id/title" />
 
     <Button
@@ -23,7 +23,8 @@ android:layout_height="match_parent">
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="56dp"
-        android:layout_marginEnd="56dp" />
+        android:layout_marginEnd="56dp"
+        android:onClick="upload"/>
 
     <Button
         android:id="@+id/add_image"
