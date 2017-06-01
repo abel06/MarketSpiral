@@ -10,6 +10,16 @@ public class ImageInfo {
     private String name;
     private String path;
 
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    private String tag;
+
     public ImageInfo(String name, String path) {
         this.name = name;
         this.path = path;
