@@ -1,5 +1,7 @@
 package com.example.abela.marketspiral.Utility;
 
+import android.util.Log;
+
 import java.util.HashMap;
 
 /**
@@ -17,6 +19,7 @@ public final class Functions {
         for (String key: data.keySet()) {
 
             String value = data.get(key);
+
             if(!value.isEmpty()) {
                 if (result.isEmpty()) {
                     result += key + "=" + data.get(key);
@@ -27,7 +30,9 @@ public final class Functions {
 
         }
 
-        return result;
+        Log.d("concatenate",result);
+
+        return "?"+result;
     }
 
 
