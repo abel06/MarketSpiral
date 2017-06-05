@@ -1,7 +1,5 @@
 package com.example.abela.marketspiral.Utility;
 
-import android.graphics.Bitmap;
-
 /**
  * Created by HaZe on 5/31/17.
  */
@@ -9,6 +7,7 @@ import android.graphics.Bitmap;
 public class ImageInfo {
     private String name;
     private String path;
+    private String encoded;
 
     public String getTag() {
         return tag;
@@ -28,6 +27,13 @@ public class ImageInfo {
     public ImageInfo() {
     }
 
+    public void setEncoded(String encoded){
+        this.encoded = encoded;
+    }
+
+    public String getEncoded(){
+        return encoded;
+    }
     public String getName() {
         return name;
     }
