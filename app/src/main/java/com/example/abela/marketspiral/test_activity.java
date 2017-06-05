@@ -121,7 +121,7 @@ public class test_activity extends AppCompatActivity {
                 Bitmap bitmap = BitmapFactory.decodeFile(img_data.get(params[0]).getPath(),
                         options);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                // Must compre**********************************************************************************ss the Image to reduce image size to make upload easy
+                // Must compress the Image to reduce image size to make upload easy
                 bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
                 byte[] byte_arr = stream.toByteArray();
                 // Encode Image to String
