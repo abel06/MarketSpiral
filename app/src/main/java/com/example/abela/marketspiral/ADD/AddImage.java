@@ -255,6 +255,11 @@ public class AddImage extends AppCompatActivity implements RemoteResponse {
     }
 
     @Override
+    public void addItem(int id) {
+
+    }
+
+    @Override
     public void imageUploaded(int value) {
 
         Toast.makeText(getApplicationContext(),"Return value" + value,Toast.LENGTH_LONG).show();
