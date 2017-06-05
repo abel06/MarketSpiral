@@ -1,7 +1,5 @@
 package com.example.abela.marketspiral.Utility;
 
-import android.util.Log;
-
 import java.util.HashMap;
 
 /**
@@ -30,9 +28,7 @@ public final class Functions {
 
         }
 
-        Log.d("concatenate",result);
-
-        return "?"+result;
+        return result;
     }
 
 
