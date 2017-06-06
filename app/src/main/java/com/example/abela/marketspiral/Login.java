@@ -248,18 +248,9 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
     }
     private void nextActivity(){
         //if(profile != null){
-            Intent search = new Intent(Login.this, ImageTest.class);
+//            Intent search = new Intent(Login.this, ImageTest.class);
 
-        Bundle data= search.getExtras();
-
-
-
-//        for (String key: ((HashMap<String,String>) user_data).keySet()
-//             ) {
-//            data.putString(key,((HashMap<String, String>) user_data).get(key));
-//        }
-
-        startActivity(search);
+//        startActivity(search);
        // }
     }
     @Override
@@ -329,9 +320,9 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
     @Override
     public void registerFinished(int value, boolean externalService) {
 
-        if(externalService && value == 1){
+        if(externalService && value > 0){
             nextActivity();
-        }else if ( value==0) {
+        }else if ( value == 0) {
             Toast.makeText(getApplicationContext(), "Registration done, please go ahead and login with the credentials", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
@@ -350,11 +341,6 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
     }
 
     @Override
-    public void addItem(int id) {
-
-    }
-
-    @Override
     public void itemAdded(int id) {
 
     }
@@ -366,6 +352,22 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
 
     @Override
     public void searchItem(int id) {
+
+    }
+
+    @Override
+    public void addLocation(int return_state) {
+
+    }
+
+    @Override
+    public void addItem(int id) {
+
+    }
+
+    @Override
+    public void imageUploaded(int value) {
+
 
     }
 
