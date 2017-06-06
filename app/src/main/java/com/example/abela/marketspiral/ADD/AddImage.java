@@ -23,7 +23,7 @@ import com.example.abela.marketspiral.interfaces.RemoteResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class AddImage extends AppCompatActivity implements  RemoteResponse{
+public class AddImage extends AppCompatActivity implements RemoteResponse{
     private ImageView imageView;
     private Button btnChoose, btnUpload;
     private ProgressBar progressBar;
@@ -162,6 +162,11 @@ public class AddImage extends AppCompatActivity implements  RemoteResponse{
     }
 
     @Override
+    public void imageUploaded(int value) {
+
+    }
+
+    @Override
     public void itemAdded(int id) {
 
     }
@@ -173,6 +178,11 @@ public class AddImage extends AppCompatActivity implements  RemoteResponse{
 
     @Override
     public void searchItem(int id) {
+
+    }
+
+    @Override
+    public void addLocation(int return_state) {
 
     }
 }
