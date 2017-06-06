@@ -168,7 +168,9 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
             OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
 
             HashMap<String,String> user_data = (HashMap<String, String>) args;
-
+            if(using_external){
+                user_data.put("external","1");
+            }
             wr.write(Functions.ConcatenateForServer(user_data));
             wr.flush();
 
