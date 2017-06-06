@@ -8,7 +8,7 @@ public interface RemoteResponse {
 
 
     /**This method is called once the login have been performed, it returns the current user id (if registered)*/
-    void loginFinished(int id);
+    void  loginFinished(int id);
 
     /**This method is called after the user registration, it returns 0 if everything went right , 1 if inserted data is already registered, -1 if there are errors*/
     void registerFinished(int value,boolean externalService);
@@ -31,5 +31,8 @@ public interface RemoteResponse {
     /**  --- This method is called to start the method search in RemotTask class ---    */
     void searchItem(int id);
 
+    /****/
+    void addLocation(int return_state);
 
+    void imageUploaded(int value);
 }
