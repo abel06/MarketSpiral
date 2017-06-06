@@ -11,6 +11,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
+import com.example.abela.marketspiral.Core.User;
 import com.example.abela.marketspiral.Decode.Home;
 import com.example.abela.marketspiral.Utility.HomesAdapter;
 
@@ -19,11 +20,15 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private User current_user;
     private RecyclerView recyclerView;
     private HomesAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        current_user = new User(getIntent().getStringExtra("full_name"),getIntent().getStringExtra("address"));
+
         setContentView(R.layout.activity_main);
       ArrayList<Home> homesList;
           homesList=getIntent().getParcelableArrayListExtra("homes");
