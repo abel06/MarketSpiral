@@ -5,13 +5,14 @@ package com.example.abela.marketspiral.Utility;
  * This class stores all the possible actions that can be performed with the remote task
  */
 public final class Actions {
-    public static final String UPLOAD_URL = "http://192.168.43.137/AndroidImageUpload/upload.php";
-    public static final int USER_REGISTRATION = 0;
-    public static final int USER_LOGIN = 1;
-    public static final int NEW_ITEM = 2;
-    public static final int REMOVE_ITEM = 3;
-    public static final int SEARCH_ITEM = 4;
-    public static final int GEOCODE_LOCATION = 5;
-    public static final int REGISTER_WITH_EXTERNAL_SERVICES = 6;
-    public static final int ADD_ITEM = 7;
+
+    public static final String USER_REGISTRATION = "register.php";
+    public static final String USER_LOGIN = "login.php";
+    public static final String NEW_ITEM = "new_item.php";
+    public static final String REMOVE_ITEM = "remove_item.php";
+    public static final String SEARCH_ITEM="search_item.php";
+    public static final String GEOCODE_LOCATION = "geocode_location";
+    public static final String UPLOAD_IMAGE = "upload_image.php";
+    public static final String ADD_ITEM ="add_item.php";
+    public static final String ADD_LOCATION = "add_location.php";
 }
