@@ -18,7 +18,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.daimajia.slider.library.SliderLayout;
+import com.example.abela.marketspiral.Core.RemoteTask;
 import com.example.abela.marketspiral.R;
+import com.example.abela.marketspiral.Utility.Actions;
+import com.example.abela.marketspiral.interfaces.RemoteResponse;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,14 +30,16 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.twitter.sdk.android.core.AuthTokenAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class AddItem extends AppCompatActivity {
+public class AddItem extends AppCompatActivity implements RemoteResponse {
     private GoogleMap mMap;
     public static SupportMapFragment mapFragment;
-
+    private HashMap<String,String> data = new HashMap<String, String>();
     private Spinner spinnerCategory;
     private Spinner spinnerBedroom;
     @Override
@@ -50,7 +55,7 @@ public class AddItem extends AppCompatActivity {
         final EditText  buildup_et= (EditText) findViewById(R.id.buildup_et);
         final EditText  price_et= (EditText) findViewById(R.id.price_et);
         final EditText  description_et= (EditText) findViewById(R.id.description_et);
-
+        final EditText  date = (EditText) findViewById(R.id.date);
 
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,9 +64,9 @@ public class AddItem extends AppCompatActivity {
                 final String buildup=buildup_et.getText().toString();
                 final String price=price_et.getText().toString();
                 final String description=description_et.getText().toString();
+                final String date_value = date.getText().toString();
 
                 Log.d("ab",""+title+buildup+price+description);
-                Intent add_location=new Intent(AddItem.this,AddLocation.class);
                 if(title.matches("")){
                     title_et.setError( "Title is required!" );
                     Toast.makeText(getApplicationContext(),"Title is Required",Toast.LENGTH_SHORT).show();
@@ -76,14 +81,17 @@ public class AddItem extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Description is Required",Toast.LENGTH_SHORT).show();
                 }else {
 
-                add_location.putExtra("category",""+spinnerCategory.getSelectedItem());
-                add_location.putExtra("bedroom",""+spinnerBedroom.getSelectedItem());
-                add_location.putExtra("title",title);
-                add_location.putExtra("buildup",buildup);
-                add_location.putExtra("price",price);
-                add_location.putExtra("description",description);
 
-                AddItem.this.startActivity(add_location);}
+                    data.put("category",""+spinnerCategory.getSelectedItem());
+                    data.put("bedroom",""+spinnerBedroom.getSelectedItem());
+                    data.put("title",title);
+                    data.put("buildup",buildup);
+                    data.put("price",price);
+                    data.put("description",description);
+                    data.put("date",date_value);
+
+                    new RemoteTask(Actions.ADD_ITEM,data,AddItem.this,false).execute();
+                }
 
             }
         });
@@ -96,7 +104,7 @@ public class AddItem extends AppCompatActivity {
             }
         });
         */
-        //-----------------------------------------------
+//        //-----------------------------------------------
     }
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -138,10 +146,59 @@ public class AddItem extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-           // ImageView mImageView;
-           // mImageView.setImageBitmap(imageBitmap);
+            ImageView mImageView = null;
+            mImageView.setImageBitmap(imageBitmap);
         }
     }
 
+    @Override
+    public void loginFinished(int id) {
 
+    }
+
+    @Override
+    public void registerFinished(int value, boolean externalService) {
+
+    }
+
+    @Override
+    public void searchFinished(int value, Object result) {
+
+    }
+
+    @Override
+    public void geocodeFinished(int id, Object result) {
+
+    }
+
+    @Override
+    public void itemAdded(int id) {
+
+    }
+
+    @Override
+    public void itemRemoved(int id) {
+
+    }
+
+    @Override
+    public void searchItem(int id) {
+
+    }
+
+    @Override
+    public void addItem(int id) {
+
+        Toast.makeText(getApplicationContext(),"Id " + id , Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(this, AddLocation.class);
+        i.putExtra("id", id);
+        startActivity(i);
+
+
+    }
+
+    @Override
+    public void imageUploaded(int value) {
+
+    }
 }
