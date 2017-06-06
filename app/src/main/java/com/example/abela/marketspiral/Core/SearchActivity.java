@@ -516,6 +516,15 @@ public boolean onCreateOptionsMenu(Menu menu) {
     public void searchItem(int id) {
     }
 
+    @Override
+    public void addLocation(int return_state) {
+
+    }
+
+    @Override
+    public void imageUploaded(int value) {
+
+    }
 
 
 //-----------------------------------------------------------------------
