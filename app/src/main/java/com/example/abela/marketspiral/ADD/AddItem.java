@@ -187,11 +187,16 @@ public class AddItem extends AppCompatActivity implements RemoteResponse {
     }
 
     @Override
+    public void addLocation(int return_state) {
+
+    }
+
+    @Override
     public void addItem(int id) {
 
         Toast.makeText(getApplicationContext(),"Id " + id , Toast.LENGTH_SHORT).show();
         Intent i = new Intent(this, AddLocation.class);
-        i.putExtra("id", id);
+        i.putExtra("id",id);
         startActivity(i);
 
 
