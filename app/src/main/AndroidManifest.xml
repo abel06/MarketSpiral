@@ -53,6 +53,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".Registor" />
         <activity android:name=".CategoryActivity" />
@@ -80,7 +81,10 @@
         <activity android:name=".ADD.AddItem" />
         <activity android:name=".ImageUpload" />
         <activity android:name=".ADD.AddImage" />
-        <activity android:name=".ADD.AddLocation"></activity>
+        <activity android:name=".ADD.AddLocation" />
+        <activity android:name=".ImageTest">
+
+        </activity>
     </application>
 
 </manifest>

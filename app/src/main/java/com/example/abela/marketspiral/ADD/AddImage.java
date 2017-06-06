@@ -10,13 +10,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.abela.marketspiral.Core.RemoteTask;
 import com.example.abela.marketspiral.R;
+import com.example.abela.marketspiral.Utility.Actions;
+import com.example.abela.marketspiral.interfaces.RemoteResponse;
 
-public class AddImage extends AppCompatActivity {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class AddImage extends AppCompatActivity implements  RemoteResponse{
     private ImageView imageView;
     private Button btnChoose, btnUpload;
     private ProgressBar progressBar;
@@ -30,17 +37,18 @@ public class AddImage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_image);
         Bundle intent =getIntent().getExtras();
-        String title=intent.getString("title");
-        String category=intent.getString("category");
-        String buildup=intent.getString("buildup");
-        String price=intent.getString("price");
-        String bedroom=intent.getString("bedroom");
-        String description=intent.getString("description");
-        double lat=intent.getDouble("lat");
-        double lng=intent.getDouble("lng");
+        final String title=intent.getString("title");
+        final String category=intent.getString("category");
+        final String buildup=intent.getString("buildup");
+        final String price=intent.getString("price");
+        final String bedroom=intent.getString("bedroom");
+        final String description=intent.getString("description");
+        final double lat=intent.getDouble("lat");
+        final double lng=intent.getDouble("lng");
         Log.d("ab",title+category+" "+buildup+" "+price+" "+bedroom+" "+description+" "+lat+" "+lng);
 
         imageView = (ImageView) findViewById(R.id.imageView);
+        final EditText tag_et = (EditText) findViewById(R.id.image_tag);
         btnChoose = (Button) findViewById(R.id.button_choose);
         btnUpload = (Button) findViewById(R.id.button_upload);
 
@@ -54,12 +62,35 @@ public class AddImage extends AppCompatActivity {
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (filePath != null) {
-                    imageUpload(filePath);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Image not selected!", Toast.LENGTH_LONG).show();
+              String tag= tag_et.getText().toString();
+                if(tag.matches("")){
+                  tag_et.setError("Tag is Required");
                 }
+               else {
+                    if (filePath != null) {
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("title", title);
+                            jsonObject.put("category", category);
+                            jsonObject.put("buildup", buildup);
+                            jsonObject.put("price", price);
+                            jsonObject.put("bedroom", bedroom);
+                            jsonObject.put("description", description);
+                            jsonObject.put("lat", lat);
+                            jsonObject.put("lng", lng);
+                            jsonObject.put("image", filePath);
+                            jsonObject.put("tag",tag);
+                            upload(jsonObject);
 
+                        } catch (JSONException e) {
+                            Log.d("ab", "" + e);
+                            e.printStackTrace();
+                        }
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Image not selected!", Toast.LENGTH_LONG).show();
+                    }
+                }
             }
         });
     }
@@ -89,8 +120,9 @@ public class AddImage extends AppCompatActivity {
 
     }
 
-    private void imageUpload(final String imagePath) {
-
+    private void upload(Object obj) {
+        new RemoteTask(Actions.ADD_ITEM,obj,this,getApplicationContext(), false).execute();
+       // Log.d("ab","objects upload"+obj);
     }
 
     private String getPath(Uri contentUri) {
@@ -102,5 +134,45 @@ public class AddImage extends AppCompatActivity {
         String result = cursor.getString(column_index);
         cursor.close();
         return result;
+    }
+
+    @Override
+    public void loginFinished(int id) {
+
+    }
+
+    @Override
+    public void registerFinished(int value, boolean externalService) {
+
+    }
+
+    @Override
+    public void searchFinished(int value, Object result) {
+
+    }
+
+    @Override
+    public void geocodeFinished(int id, Object result) {
+
+    }
+
+    @Override
+    public void addItem(int id) {
+
+    }
+
+    @Override
+    public void itemAdded(int id) {
+
+    }
+
+    @Override
+    public void itemRemoved(int id) {
+
+    }
+
+    @Override
+    public void searchItem(int id) {
+
     }
 }

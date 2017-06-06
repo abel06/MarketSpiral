@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.example.abela.marketspiral.ADD.AddItem;
 import com.example.abela.marketspiral.Core.RemoteTask;
 import com.example.abela.marketspiral.Core.SearchActivity;
 import com.example.abela.marketspiral.Google.PlayServiceCheck;
@@ -246,7 +248,7 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
     }
     private void nextActivity(){
         //if(profile != null){
-            Intent search = new Intent(Login.this, SearchActivity.class);
+            Intent search = new Intent(Login.this, ImageTest.class);
 
         Bundle data= search.getExtras();
 
@@ -344,6 +346,11 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
 
     @Override
     public void geocodeFinished(int id, Object o) {
+
+    }
+
+    @Override
+    public void addItem(int id) {
 
     }
 

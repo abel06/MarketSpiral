@@ -406,7 +406,12 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
 
     } //when geocode finished set the data to autocomplate Edit text
 
-//================================================================================================================================================
+    @Override
+    public void addItem(int id) {
+
+    }
+
+    //================================================================================================================================================
 @Override
 public boolean onCreateOptionsMenu(Menu menu) {
     MenuInflater inflater = getMenuInflater();

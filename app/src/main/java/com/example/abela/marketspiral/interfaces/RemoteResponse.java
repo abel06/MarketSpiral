@@ -20,6 +20,9 @@ public interface RemoteResponse {
     void geocodeFinished(int id,Object result);
 
     /**This method is called when a new item have been added into the DB, if no error arises the id has the item id, -1 otherwise*/
+    void addItem(int id);
+
+    /**This method is called when a new item have been added into the DB, if no error arises the id has the item id, -1 otherwise*/
     void itemAdded(int id);
 
     /**This method is called when an item have been removed into the DB, if no error arises the id has the item id, -1 otherwise*/
