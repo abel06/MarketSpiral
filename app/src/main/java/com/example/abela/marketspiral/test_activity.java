@@ -15,6 +15,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.android.volley.misc.AsyncTask;
+import com.example.abela.marketspiral.Core.Tester;
 import com.example.abela.marketspiral.Utility.Actions;
 import com.example.abela.marketspiral.Utility.ImageInfo;
 import com.example.abela.marketspiral.Utility.ServerInfo;
@@ -25,13 +26,13 @@ import com.loopj.android.http.RequestParams;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
-
-
 public class test_activity extends AppCompatActivity {
 
     private ArrayList<ImageInfo> img_data= new ArrayList<>();
     private GridView gridView;
     private CustomImageAdapter adapter;
+    private int item_id;
+    private int sent_images = 0;
 
     static final int PICK_IMAGE_REQUEST = 1;
 
@@ -43,6 +44,7 @@ public class test_activity extends AppCompatActivity {
         img_data = new ArrayList<>();
         adapter = new CustomImageAdapter(this,img_data);
         gridView.setAdapter(adapter);
+        item_id = (int) getIntent().getExtras().get("id");
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -92,9 +94,9 @@ public class test_activity extends AppCompatActivity {
                 LinearLayout ly = (LinearLayout) gridView.getChildAt(i);
                 EditText tag = (EditText) ly.findViewById(R.id.editText3);
                 Log.d("TEST","Valore tag :" + tag.getText().toString());
+                img_data.get(i).setTag(tag.getText().toString());
 
-
-//                encodeImagetoString(i);
+                encodeImagetoString(i);
             }
 //                    imageUpload();
         } else {
@@ -109,9 +111,7 @@ public class test_activity extends AppCompatActivity {
 
         new AsyncTask<Integer, Void, String>() {
 
-            protected void onPreExecute() {
-
-            };
+            protected void onPreExecute() {}
 
             @Override
             protected String doInBackground(Integer... params) {
@@ -134,6 +134,8 @@ public class test_activity extends AppCompatActivity {
                 // Put converted Image string into Async Http Post param
                 params.put("image", msg);
                 params.put("filename",img_data.get(position).getName());
+                params.put("tag",img_data.get(position).getTag());
+                params.put("id",item_id);
                 // Trigger Image upload
                 makeHTTPCall(params);
 
@@ -147,8 +149,15 @@ public class test_activity extends AppCompatActivity {
                 params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int i, cz.msebera.android.httpclient.Header[] headers, byte[] bytes) {
-                        Toast.makeText(getApplicationContext(), "DONE",
-                                Toast.LENGTH_SHORT).show();
+                        sent_images ++;
+
+                        if(sent_images == img_data.size()){
+                            Toast.makeText(getApplicationContext(), "All images uploaded",
+                                    Toast.LENGTH_SHORT).show();
+                            sent_images =0;
+                            Intent intent = new Intent(test_activity.this, Tester.class);
+                            startActivity(intent);
+                        }
                     }
 
                     @Override
