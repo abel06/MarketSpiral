@@ -335,13 +335,16 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
     @Override
     public void registerFinished(int value, boolean externalService) {
 
-        if(externalService && value > 0){
-            nextActivity();
-        }else if ( value == 0) {
-            Toast.makeText(getApplicationContext(), "Registration done, please go ahead and login with the credentials", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
-        }
+        /**Done do what you want here -- ABEL --**/
+//                    Toast.makeText(getApplicationContext(), String.valueOf(value), Toast.LENGTH_SHORT).show();
+
+//        if(externalService && value > 0){
+//            nextActivity();
+//        }else if ( value == 0) {
+//            Toast.makeText(getApplicationContext(), "Registration done, please go ahead and login with the credentials", Toast.LENGTH_SHORT).show();
+//        }else{
+//            Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+//        }
 
 }
 
