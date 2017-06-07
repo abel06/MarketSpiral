@@ -7,6 +7,6 @@ package com.example.abela.marketspiral.Utility;
 public final class ServerInfo {
 
     public static final String LOCAL_DB_URL = "http://10.0.2.2/";
-    public static final String DB_URL = "http://192.168.1.238/" ;
+    public static final String DB_URL = "http://192.168.1.200/" ;
 
 }
