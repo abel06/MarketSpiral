@@ -98,7 +98,10 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
                 @Override
                 public void onClick(View v) {
                     HashMap<String,String> data=new HashMap<String, String>();
-                    data.put(input_usernameTv.getText().toString(),input_passwordTv.getText().toString());
+
+                    data.put("username",input_usernameTv.getText().toString());
+                    data.put("password",input_passwordTv.getText().toString());
+
                     login(data);
                 }
             });
@@ -328,6 +331,7 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
     @Override
     public void loginFinished(int value) {
 
+        Toast.makeText(getApplicationContext(),"ID " + value,Toast.LENGTH_SHORT).show();
         nextActivity();
 
     }
