@@ -47,11 +47,11 @@
 
             </FrameLayout>
 
-
         </FrameLayout>
 
         <include
             layout="@layout/signup_layout"
+            android:id="@+id/signup_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"></include>
     </LinearLayout>
