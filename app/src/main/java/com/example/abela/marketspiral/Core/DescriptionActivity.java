@@ -19,7 +19,6 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.example.abela.marketspiral.Decode.Home;
 import com.example.abela.marketspiral.Decode.Image;
-import com.example.abela.marketspiral.Google.Geocode;
 import com.example.abela.marketspiral.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -101,7 +100,7 @@ public class DescriptionActivity extends AppCompatActivity implements OnMapReady
         });
         //-----------------------------------------------
 
-        TextView  price_tv= (TextView) findViewById(R.id.price_tv);
+        TextView  price_tv= (TextView) findViewById(R.id.language_tv);
         price_tv.setText(""+home.getPrice());
         TextView  bedroom_tv= (TextView) findViewById(R.id.bedroom_tv);
         bedroom_tv.setText(""+home.getBedroom());

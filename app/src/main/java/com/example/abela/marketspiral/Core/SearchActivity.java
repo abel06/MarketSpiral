@@ -526,6 +526,11 @@ public boolean onCreateOptionsMenu(Menu menu) {
 
     }
 
+    @Override
+    public void editProfile(int value) {
+
+    }
+
 
 //-----------------------------------------------------------------------
 }

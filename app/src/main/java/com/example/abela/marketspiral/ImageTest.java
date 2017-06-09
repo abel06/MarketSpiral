@@ -131,7 +131,7 @@ public class ImageTest extends AppCompatActivity {
                 //here we can pass the login information so if its from facebook we will use fb id
              if(!fbid.isEmpty()){
                     name= fbid+"_"+year+""+month+""+day+""+hour+""+minute+""+second+"_"+img_data.get(i).getName();
-                    uploadMultipart(path,name);
+                    uploadMultipart(path,name,tag.getText().toString(),fbid);
 
                 }/*else if (!twid.isEmpty()){
                     name= twid+"_"+year+""+month+""+day+""+hour+""+minute+""+second+"_"+img_data.get(i).getName();
@@ -150,21 +150,23 @@ public class ImageTest extends AppCompatActivity {
 
     }
 
-    public void uploadMultipart(String path,String name) {
+    public void uploadMultipart(String path, String name,String tag,String id) {
         //Uploading code
         try {
             String uploadId = UUID.randomUUID().toString();
 
             //Creating a multi part request
-            String b = new MultipartUploadRequest(this, uploadId, Actions.UPLOAD_URL)
+            String b = new MultipartUploadRequest(this, uploadId,ServerInfo.DB_URL+Actions.UPLOAD_IMAGE)
                     .addFileToUpload(path, "image") //Adding file
                     .addParameter("name", name) //Adding text parameter to the request
+                    .addParameter("tag",tag)
+                    .addParameter("id",id)
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
 
         } catch (Exception exc) {
-            Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "abela "+exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 }

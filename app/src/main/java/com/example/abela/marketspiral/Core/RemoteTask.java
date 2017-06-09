@@ -113,6 +113,8 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
 
             case Actions.USER_REGISTRATION: delegate.registerFinished(integer,using_external);break;
 
+            case Actions.EDIT_PROFILE: delegate.editProfile(integer);break;
+
             case Actions.USER_LOGIN : delegate.loginFinished(integer); break;
 
             case Actions.NEW_ITEM : delegate.itemAdded(integer);break;
@@ -149,8 +151,8 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
     }
 
 
-    private Integer ContactTheServer(String Action){
-
+    private Integer ContactTheServer(String Action) {
+        Log.d("ab_log","responce server"+Action);
         HttpURLConnection connection = null;
         BufferedReader reader ;
         int server_response=-1;
@@ -181,17 +183,19 @@ public class RemoteTask extends AsyncTask<Void,Void,Integer> {
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
             }
-            server_response = Integer.parseInt(sb.toString());
+          // server_response = Integer.parseInt(sb.toString());
+            Log.d("ab_log","response "+sb.toString());
 
         } catch (IOException e) {
             e.printStackTrace();
+            Log.d("ab_log","error "+e);
             return server_response;
         } finally {
             connection.disconnect();
         }
-
         return server_response;
 
     }
+
 
 }

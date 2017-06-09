@@ -148,4 +148,9 @@ public class AddLocation extends AppCompatActivity implements OnMapReadyCallback
     public void imageUploaded(int value) {
 
     }
+
+    @Override
+    public void editProfile(int value) {
+
+    }
 }

@@ -206,4 +206,9 @@ public class AddItem extends AppCompatActivity implements RemoteResponse {
     public void imageUploaded(int value) {
 
     }
+
+    @Override
+    public void editProfile(int value) {
+
+    }
 }

@@ -35,4 +35,6 @@ public interface RemoteResponse {
     void addLocation(int return_state);
 
     void imageUploaded(int value);
+
+    void editProfile(int value);
 }

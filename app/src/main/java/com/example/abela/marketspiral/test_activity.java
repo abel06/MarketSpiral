@@ -19,16 +19,13 @@ import com.example.abela.marketspiral.Core.Tester;
 import com.example.abela.marketspiral.Utility.Actions;
 import com.example.abela.marketspiral.Utility.ImageInfo;
 import com.example.abela.marketspiral.Utility.ServerInfo;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.Base64;
-import com.loopj.android.http.RequestParams;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class test_activity extends AppCompatActivity {
 
-    private ArrayList<ImageInfo> img_data= new ArrayList<>();
+   /* private ArrayList<ImageInfo> img_data= new ArrayList<>();
     private GridView gridView;
     private CustomImageAdapter adapter;
     private int item_id;
@@ -172,5 +169,5 @@ public class test_activity extends AppCompatActivity {
                 });
     }
 
-
+*/
 }

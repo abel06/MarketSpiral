@@ -167,6 +167,11 @@ public class AddImage extends AppCompatActivity implements RemoteResponse{
     }
 
     @Override
+    public void editProfile(int value) {
+
+    }
+
+    @Override
     public void itemAdded(int id) {
 
     }
