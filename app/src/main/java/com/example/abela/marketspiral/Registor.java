@@ -2,9 +2,13 @@ package com.example.abela.marketspiral;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.graphics.Palette;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -28,11 +32,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Registor extends AppCompatActivity implements RemoteResponse {
-
+    private CollapsingToolbarLayout collapsingToolbarLayout = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registor);
+
+
         final EditText input_username= (EditText) findViewById(R.id.input_username);
         final EditText input_email= (EditText) findViewById(R.id.input_email);
         final EditText input_password= (EditText) findViewById(R.id.input_password);
@@ -143,6 +149,7 @@ input_confirm.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
     }
 
+
     @Override
     public void loginFinished(int id) {
 
@@ -150,7 +157,10 @@ input_confirm.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
     @Override
     public void registerFinished(int value, boolean externalService) {
-
+        Intent profile_intent=new Intent(Registor.this, com.example.abela.marketspiral.Profile.class);
+        profile_intent.putExtra("id",value);
+        Registor.this.startActivity(profile_intent);
+        Log.d("ab_log","id "+value);
     }
 
     @Override
@@ -196,45 +206,5 @@ input_confirm.setOnFocusChangeListener(new View.OnFocusChangeListener() {
     @Override
     public void editProfile(int value) {
 
-    }
-
-
-    public class CheckingPassword {
-
-        public void main(String[] args) {
-            Scanner input = new Scanner(System.in);
-            System.out.print("Please enter a Password: ");
-            String password = input.next();
-            if (isValid(password)) {
-                System.out.println("Valid Password");
-            } else {
-                System.out.println("Invalid Password");
-            }
-        }
-
-        public  boolean isValid(String password) {
-            //return true if and only if password:
-            //1. have at least eight characters.
-            //2. consists of only letters and digits.
-            //3. must contain at least two digits.
-            if (password.length() < 8) {
-                return false;
-            } else {
-                char c;
-                int count = 0;
-                for (int i = 0; i < password.length() - 1; i++) {
-                    c = password.charAt(i);
-                    if (!Character.isLetterOrDigit(c)) {
-                        return false;
-                    } else if (Character.isDigit(c)) {
-                        count++;
-                        if (count < 2)   {
-                            return false;
-                        }
-                    }
-                }
-            }
-            return true;
-        }
     }
 }

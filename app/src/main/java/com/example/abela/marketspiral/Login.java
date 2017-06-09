@@ -80,6 +80,9 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Log.d("ab_log","result ");
+
         FloatingActionButton fabSignup= (FloatingActionButton) findViewById(R.id.fab_signup);
         fabSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,10 +101,7 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
                 @Override
                 public void onClick(View v) {
                     HashMap<String,String> data=new HashMap<String, String>();
-
-                    data.put("username",input_usernameTv.getText().toString());
-                    data.put("password",input_passwordTv.getText().toString());
-
+                    data.put(input_usernameTv.getText().toString(),input_passwordTv.getText().toString());
                     login(data);
                 }
             });
@@ -144,9 +144,9 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
                 user_data.put("id",String.valueOf(current_profile.getId()));
                 user_data.put("full_name",current_profile.getName());
 
-
                 new RemoteTask(Actions.USER_REGISTRATION,user_data,Login.this,true).execute();
                 Toast.makeText(getApplicationContext(), "Logging in...", Toast.LENGTH_SHORT).show();
+
 
             }
 
@@ -266,10 +266,9 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
        // nextActivity();
     }
     private void nextActivity(){
-//        if(profile != null){
-//            Intent search = new Intent(Login.this, ImageTest.class);
-//
-//        startActivity(search);
+
+          Intent search = new Intent(Login.this, ImageTest.class);
+          Login.this.startActivity(search);
 //        }
     }
     @Override
@@ -292,6 +291,7 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
         //Facebook login
         callbackManager.onActivityResult(requestCode, responseCode, intent);
 
+
         Log.d("ab","result "+requestCode);
 
         //twitter Login
@@ -301,20 +301,19 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
         if (requestCode == RC_SIGN_IN) {
             try {
                 GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
-                Log.d("ab","result "+result);
+
             if (result.isSuccess()) {
                google_session = result.getSignInAccount();
 
                 // Get account information
-                HashMap<String,String> collected_data= new HashMap<>();
-
-
+               HashMap<String,String> collected_data= new HashMap<>();
                 String full_name = google_session.getDisplayName();
 
                 collected_data.put("id",google_session.getId());
                 collected_data.put("full_name", full_name);
 
-                new RemoteTask(Actions.USER_REGISTRATION,collected_data,this,mContext,true).execute();
+                    new RemoteTask(Actions.USER_REGISTRATION, collected_data, this, mContext, true).execute();
+
 
             }
     }catch (Exception e){
@@ -325,31 +324,32 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
 
     }
     public void login(HashMap<String,String> data) {
-
         new RemoteTask(Actions.USER_LOGIN,data,this,mContext,false).execute();
     }
     @Override
     public void loginFinished(int value) {
-
-        Toast.makeText(getApplicationContext(),"ID " + value,Toast.LENGTH_SHORT).show();
-        nextActivity();
-
+       // nextActivity();
     }
 
     @Override
-    public void registerFinished(int value, boolean externalService) {
+    public void registerFinished(int id, boolean externalService) {
+         Intent profile_intent=new Intent(Login.this, com.example.abela.marketspiral.Profile.class);
+           profile_intent.putExtra("id",id);
+          Login.this.startActivity(profile_intent);
+            Log.d("ab_log","id "+id);
+      /*  Toast.makeText(getApplicationContext(), String.valueOf(value), Toast.LENGTH_SHORT).show();
 
-        /**Done do what you want here -- ABEL --**/
-//                    Toast.makeText(getApplicationContext(), String.valueOf(value), Toast.LENGTH_SHORT).show();
-
-//        if(externalService && value > 0){
-//            nextActivity();
-//        }else if ( value == 0) {
-//            Toast.makeText(getApplicationContext(), "Registration done, please go ahead and login with the credentials", Toast.LENGTH_SHORT).show();
-//        }else{
-//            Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
-//        }
-
+   if(externalService && value > 0){
+          // nextActivity();
+        }else if ( value == 0) {
+          // com.example.abela.marketspiral.Profile profile=new com.example.abela.marketspiral.Profile();
+          // Intent profile_intent=new Intent(Login.this, com.example.abela.marketspiral.Profile.class);
+         //  Login.this.startActivity(profile_intent);
+           // Toast.makeText(getApplicationContext(), "Registration done, please go ahead and login with the credentials", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+        }
+*/
 }
 
     @Override
@@ -390,6 +390,11 @@ public class Login extends AppCompatActivity implements RemoteResponse, GoogleAp
     @Override
     public void imageUploaded(int value) {
 
+
+    }
+
+    @Override
+    public void editProfile(int value) {
 
     }
 
