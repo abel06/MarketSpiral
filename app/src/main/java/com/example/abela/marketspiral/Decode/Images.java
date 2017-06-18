@@ -18,21 +18,40 @@ public class Images implements Parcelable {
 
   ArrayList<Image> images=new ArrayList<>();
     public Images(String images_jArrayList){
+
+        JSONArray jsonArray = null;
         try {
-            JSONArray jsonArray =new JSONArray(images_jArrayList);
-            for(int i=0;i<jsonArray.length();i++){
-                JSONObject jsonObject =jsonArray.getJSONObject(i);
-                  String tmp_tag=jsonObject.getString("tag");
-                  String tmp_url=jsonObject.getString("url");
-
-               Image image=  new Image(tmp_tag,tmp_url);
-                images.add(image);
-
-            }
-
+            jsonArray = new JSONArray(images_jArrayList);
         } catch (JSONException e) {
-            Log.d("ab","image tag"+e);
+            e.printStackTrace();
         }
+        if(jsonArray!=null) {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = jsonArray.getJSONObject(i);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String tmp_tag = null;
+                try {
+                    tmp_tag = jsonObject.getString("tag");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String tmp_url = null;
+                try {
+                    tmp_url = jsonObject.getString("name");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (tmp_url != null) {
+                    Image image = new Image(tmp_tag, tmp_url);
+                    images.add(image);
+                }
+            }
+        }
+
     }
 
     protected Images(Parcel in) {

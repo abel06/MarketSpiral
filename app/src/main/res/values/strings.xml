@@ -72,4 +72,18 @@
     <string name="facebook_app_id">291954481255010</string>
     <string name="fb_login_protocol_scheme">fb291954481255010</string>
     <string name="logout">Logout</string>
+    <string name="villa">Villa</string>
+    <string name="residential">Residential</string>
+    <string name="commercial">Commercial</string>
+    <string name="action_add_item">Add item</string>
+    <string name="remove">Remove</string>
+    <string name="delete">Delete</string>
+    <string name="add_item">Add item</string>
+    <string name="action_my_items">My Homes</string>
+    <string name="add_home">Add Home</string>
+    <string name="sattelite">Sattelite </string>
+    <string name="normal">Normal</string>
+    <string name="hybrid">Hybrid</string>
+    <string name="terrain">Terrain</string>
+    <string name="none">None</string>
 </resources>

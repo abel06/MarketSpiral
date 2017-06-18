@@ -1,5 +1,7 @@
 package com.example.abela.marketspiral.Decode;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,39 +14,69 @@ import java.util.ArrayList;
  */
 
 public class DataDecoder {
-    String mResult;
+    String mResult="";
     private Villa vila;
     private Residential residential;
     private Commercial commercial;
     public DataDecoder(String result){
       this.mResult=result;
 
-
     }
-   public void decode(){
-        try {
-            JSONObject jsonRootObject = new JSONObject(mResult);
-            if(jsonRootObject!=null){
-                try {
-                    JSONArray villasJArray = jsonRootObject.getJSONArray("villas");
-                    vila=new Villa();
-                    vila.setVillas(villasJArray);
-                    JSONArray residentialsJArray = jsonRootObject.getJSONArray("residentials");
-                    residential =new Residential();
-                    residential.setResidentals(residentialsJArray);
-                    JSONArray commercialsJArray = jsonRootObject.getJSONArray("commercials");
-                    commercial=new Commercial();
-                    commercial.setCommercial(commercialsJArray);
+   public boolean decode(){
 
-                }catch (JSONException j){
+       JSONObject jsonRootObject = null;
+       try {
+           jsonRootObject = new JSONObject(mResult);
+       } catch (JSONException e) {
+           e.printStackTrace();
+       }
+      if(jsonRootObject!=null) {
 
-                }
+          JSONArray villasJArray = null;
+          try {
+              villasJArray = jsonRootObject.getJSONArray("villas");
+              if (villasJArray != null) {
+                  vila = new Villa();
+                  vila.setVillas(villasJArray);
 
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+              }
+          } catch (JSONException e) {
+
+          }
+
+          JSONArray residentialsJArray = null;
+          try {
+              residentialsJArray = jsonRootObject.getJSONArray("residentials");
+              if (residentialsJArray != null) {
+                  residential = new Residential();
+                  residential.setResidentals(residentialsJArray);
+                  Log.d("ab_log", " residential " + residential);
+
+              }
+          } catch (JSONException e) {
+              Log.d("ab_log", "" + e);
+          }
+
+
+          JSONArray commercialsJArray = null;
+          try {
+              commercialsJArray = jsonRootObject.getJSONArray("commercials");
+              if (commercialsJArray != null) {
+                  commercial = new Commercial();
+                  commercial.setCommercial(commercialsJArray);
+              }
+
+          } catch (JSONException e) {
+              e.printStackTrace();
+          }
+        if(residentialsJArray==null&&commercialsJArray==null&&villasJArray==null){
+            return false;
         }
-    }
+        else return true;
+      }
+
+       return false;
+   }
 
 
     public class Residential{
@@ -53,19 +85,26 @@ public class DataDecoder {
         }
       public void setResidentals(JSONArray jsonArray){
             for (int index=0;index<=jsonArray.length();index++){
+
+                JSONObject jsonObject = null;
                 try {
-                    JSONObject jsonObject =new JSONObject(jsonArray.get(index).toString());
-                    Property property=new Property();
-                    property.setProperty(jsonObject);
-                    Home home=new Home(index,property);
-                    homes.add(index,home);
+                    jsonObject = new JSONObject(jsonArray.get(index).toString());
                 } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+                if(jsonObject!=null){
+                        Property property=new Property();
+                        property.setProperty(jsonObject);
+                        Home home=new Home(index,property);
+                        if(home.getImage().getImagesCount()>0){
+                            homes.add(home);}
+                    }
             }
         }
         public ArrayList<Home> getHomes(){
             return homes;
         }
+
 
     }
     public class Commercial{
@@ -77,16 +116,21 @@ public class DataDecoder {
         public void setCommercial(JSONArray jsonArray){
             ArrayList<JSONObject>jsonObjectList = new ArrayList<>();
             for (int index=0;index<=jsonArray.length();index++){
+
+                JSONObject jsonObject = null;
                 try {
-                    JSONObject jsonObject =new JSONObject(jsonArray.get(index).toString());
+                    jsonObject = new JSONObject(jsonArray.get(index).toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if(jsonObject!=null){
                     Property property=new Property();
                     property.setProperty(jsonObject);
                     Home home=new Home(index,property);
-
-                    homes.add(index,home);
-
-                } catch (JSONException e) {
+                    if(home.getImage().getImagesCount()>0){
+                        homes.add(home);}
                 }
+
             }
         }
         public ArrayList<Home> getHomes(){
@@ -101,16 +145,23 @@ public class DataDecoder {
         }
         public void setVillas(JSONArray jsonArray){
 
-            for (int index=0;index<=jsonArray.length();index++){
+            for (int index=0;index<jsonArray.length();index++){
+
+                JSONObject jsonObject = null;
                 try {
-                    JSONObject jsonObject =new JSONObject(jsonArray.get(index).toString());
+                    jsonObject = new JSONObject(jsonArray.get(index).toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if(jsonObject!=null){
                     Property property=new Property();
                     property.setProperty(jsonObject);
-                    Home home=new Home(index,property);
-                    homes.add(index,home);
-
-                } catch (JSONException e) {
+                      Home home=new Home(index,property);
+                     if(home.getImage().getImagesCount()>0){
+                      homes.add(home);}
                 }
+
+
             }
         }
         public ArrayList<Home> getHomes(){
@@ -128,6 +179,43 @@ public class DataDecoder {
         return commercial;
     }
 
-
+    public ArrayList<Home> getResidentialHomes(){
+        if(residential!=null){
+            return residential.getHomes();
+        }
+        Log.d("ab_log", " residential " + residential);
+      return null;
+    }
+    public ArrayList<Home> getCommercialHomes(){
+        if(commercial!=null){
+            return commercial.getHomes();
+        }
+        return null;
+    }
+    public ArrayList<Home> getVillaHomes(){
+        if(vila!=null){
+            return vila.getHomes();
+        }
+        return null;
+    }
+    public ArrayList<Home> getAllHomes(){
+        ArrayList<Home> homes=new ArrayList<>();
+        if(residential!=null){
+           for(int i=0;i<residential.getHomes().size();i++){
+               homes.add(residential.getHomes().get(i));
+           }
+        }
+        if(commercial!=null){
+            for(int i=0;i<commercial.getHomes().size();i++){
+                homes.add(commercial.getHomes().get(i));
+            }
+        }
+        if(vila!=null){
+            for(int i=0;i<vila.getHomes().size();i++){
+                homes.add(vila.getHomes().get(i));
+            }
+        }
+        return homes;
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.example.abela.marketspiral.Core;
+package com.example.abela.marketspiral.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,13 +26,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.abela.marketspiral.CategoryActivity;
+import com.example.abela.marketspiral.ADD.MyItems;
+import com.example.abela.marketspiral.Core.CustomOnItemSelectedListener;
+import com.example.abela.marketspiral.Core.RemoteTask;
+import com.example.abela.marketspiral.Core.Session;
 import com.example.abela.marketspiral.Google.LocationSettingDialog;
 import com.example.abela.marketspiral.Google.PlayServiceCheck;
-import com.example.abela.marketspiral.Login;
 import com.example.abela.marketspiral.R;
+import com.example.abela.marketspiral.User.UserLogin;
 import com.example.abela.marketspiral.Utility.Actions;
-import com.example.abela.marketspiral.Utility.TextWriteRead;
+import com.example.abela.marketspiral.Utility.CheckHomeExist;
 import com.example.abela.marketspiral.interfaces.RemoteResponse;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
@@ -61,11 +64,10 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
         GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener, LocationListener ,RemoteResponse{
     private static final int REQUEST_CODE_AUTOCOMPLETE = 1;
 
-
-
     private Spinner spinnerFrom, spinnerTo,spinnerBedroom;
     private Button btnSearch;
     private FloatingActionButton locationBtn;
+
 //==========================================================
     LocationSettingDialog locationSettingDialog;
     Address address=null;
@@ -77,6 +79,7 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
   //===================================================
     public static GoogleApiClient mGoogleApiClient;
     public EditText autocomplete_tv;
+    public HashMap<String,String>query=new HashMap<>();
 //======================================================
     Context mContext;
     @Override
@@ -319,6 +322,7 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
                                 data.put("bed_room",""+spinnerBedroom.getSelectedItem().toString());
                             }
 
+                            query=data;
                              search(data);    //actual search
 
                         } else if(place!=null){   //else if the location is from autocomplate window
@@ -339,6 +343,7 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
                                 data.put("bed_room",""+spinnerBedroom.getSelectedItem().toString());
                             }
                             search(data);    //actual search
+                            query=data;
 
                         }
                         else {
@@ -361,17 +366,28 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
     };                                                              ///geocode
     //--------------------------------------------------------------------------
     @Override
-    public void searchFinished(int value,Object result) {
-        String result_tmp= (String) result;
-        if(value == 1){
-            Intent categoryIntent = new Intent(SearchActivity.this, CategoryActivity.class);
-            categoryIntent.putExtra("result",result_tmp);
-            SearchActivity.this.startActivity(categoryIntent);   //start Main Activity
-            TextWriteRead textWriteRead =new TextWriteRead();
-            textWriteRead.writeToFile(result_tmp,getApplicationContext(),"result");
-        }else {
-            Toast.makeText(mContext,"Unable to reach Homespiral server please check you internet",Toast.LENGTH_SHORT).show();
+    public void searchFinished(int value,Object object) {
+        switch (value){
+            case 1:
+                CheckHomeExist checkHomeExist =new CheckHomeExist(object,getApplicationContext());
+                if(checkHomeExist.isHomeExist()){
+                    Intent categoryIntent = new Intent(SearchActivity.this, CategoryActivity.class);
+                    categoryIntent.putExtra("result",object.toString());
+                    categoryIntent.putExtra("query",query);
+                    SearchActivity.this.startActivity(categoryIntent);
+                }else
+                    {Toast.makeText(mContext,"You don't have any home please add one",Toast.LENGTH_SHORT).show();
+                    }
+                break;
+            case -1:
+                Toast.makeText(mContext,"You don't have any home please add one",Toast.LENGTH_SHORT).show();
+                break;
+            case -3:
+                Toast.makeText(mContext,"Unable to reach Homespiral server please check you internet",Toast.LENGTH_SHORT).show();
+                break;
+
         }
+
     }   //deligate search finished if the search is finished open new activity
 
     @Override
@@ -406,7 +422,17 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
 
     } //when geocode finished set the data to autocomplate Edit text
 
-//================================================================================================================================================
+    @Override
+    public void addItem(int id) {
+
+    }
+
+    @Override
+    public void itemAdded(int id, Object result) {
+
+    }
+
+    //================================================================================================================================================
 @Override
 public boolean onCreateOptionsMenu(Menu menu) {
     MenuInflater inflater = getMenuInflater();
@@ -418,29 +444,44 @@ public boolean onCreateOptionsMenu(Menu menu) {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_logout:
-
-                Intent login=new Intent(SearchActivity.this, Login.class);
-                startActivity(login);
                 logout();
+                Intent login=new Intent(SearchActivity.this, UserLogin.class);
+                startActivity(login);
+                finish();
+                return true;
+            case R.id.action_my_items:
+
+                            Intent intent=getIntent();
+                            String result= intent.getStringExtra("result");
+                            Intent my_item_intent=new Intent(SearchActivity.this, MyItems.class);
+                            my_item_intent.putExtra("result",result);
+                            startActivity(my_item_intent);
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }//Not used methods  below this
+    }
     void logout(){
+        Session session=new Session(getApplicationContext());
+        session.clearSession();
         //logout from facebook
-        LoginManager.getInstance().logOut();
+        if(LoginManager.getInstance()!=null){
+        LoginManager.getInstance().logOut();}
 
         //logout from twitter
+        else if( Twitter.getSessionManager()!=null){
         CookieSyncManager.createInstance(this);
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.removeSessionCookie();
         Twitter.getSessionManager().clearActiveSession();
-        Twitter.logOut();
-
+        Twitter.logOut();}
+else {
         //logout from google
         revokeAccess();
         finish();
+
+}
     }
     private void revokeAccess() {
         Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
@@ -488,7 +529,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
     }
 
     @Override
-    public void loginFinished(int value) {
+    public void loginFinished(int value,Object obj) {
 
     }
 
@@ -497,10 +538,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
 
     }
 
-    @Override
-    public void itemAdded(int id) {
 
-    }
 
     @Override
     public void itemRemoved(int id) {
@@ -511,6 +549,20 @@ public boolean onCreateOptionsMenu(Menu menu) {
     public void searchItem(int id) {
     }
 
+    @Override
+    public void profileFinished(int responce) {
+
+    }
+
+    @Override
+    public void imageUploaded(int value) {
+
+    }
+
+    @Override
+    public void myItems(Integer id,Object result) {
+
+    }
 
 
 //-----------------------------------------------------------------------

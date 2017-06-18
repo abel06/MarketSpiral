@@ -1,26 +1,32 @@
-package com.example.abela.marketspiral.Core;
+package com.example.abela.marketspiral.Activities;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Location;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.example.abela.marketspiral.Core.RemoteTask;
 import com.example.abela.marketspiral.Decode.Home;
 import com.example.abela.marketspiral.Decode.Image;
-import com.example.abela.marketspiral.Google.Geocode;
 import com.example.abela.marketspiral.R;
+import com.example.abela.marketspiral.Utility.Actions;
+import com.example.abela.marketspiral.interfaces.RemoteResponse;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,18 +38,19 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class DescriptionActivity extends AppCompatActivity implements OnMapReadyCallback,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
+public class DescriptionActivity extends AppCompatActivity implements OnMapReadyCallback,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener,RemoteResponse{
       private Context mContext;
       private Activity mActivity;
       Home home;
     private GoogleMap mMap;
     private SliderLayout mDemoSlider;
     public static SupportMapFragment mapFragment;
-
+    TextView address_tv;
     double lat;
     double lng;
-    String phone="";
+    List<String> phone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +61,8 @@ public class DescriptionActivity extends AppCompatActivity implements OnMapReady
         lat      =home.getLat();
         lng      =home.getLng();
         phone    =home.getOwner().getPhone();
+
+        Log.d("ab+log","phone"+phone);
        //-----------------------------------------------
          FragmentManager fm = getSupportFragmentManager();
         Fragment fragment =fm.findFragmentById(R.id.map_container);
@@ -66,7 +75,7 @@ public class DescriptionActivity extends AppCompatActivity implements OnMapReady
         }
        //-----------------------------------------------
 
-        TextView address_tv = (TextView) findViewById(R.id.address_tv);
+       address_tv = (TextView) findViewById(R.id.address_tv);
         TextView owner_name_tv= (TextView) findViewById(R.id.owner_name_tv);
         TextView email_tv= (TextView) findViewById(R.id.email_tv);
         TextView phone_number_tv = (TextView) findViewById(R.id.phone_number_tv);
@@ -75,9 +84,16 @@ public class DescriptionActivity extends AppCompatActivity implements OnMapReady
         //-----------------------------------------------
         owner_name_tv.setText(home.getOwner().getName());
         email_tv.setText(home.getOwner().getEmail());
-        phone_number_tv.setText(home.getOwner().getPhone()+" "+home.getOwner().getPhone());        //address and owner info
+        phone_number_tv.setText(home.getOwner().getPhoneAsString());        //address and owner info
         language_tv.setText(home.getOwner().getLanguage());
-        address_tv.setText(home.getAddress());
+
+        /*HashMap<String, Double> latlng=new HashMap<>();
+        latlng.put("lat",home.getLat());
+        latlng.put("lng",home.getLng());*/
+
+        LatLng latLng =new LatLng(home.getLat(),home.getLng());
+        getAddress(latLng);
+        //address_tv.setText(home.getAddress());
         //------------------------------------------------------
         FloatingActionButton loc_on_mmap_btn= (FloatingActionButton) findViewById(R.id.fab_loc_on_map);
         loc_on_mmap_btn.setOnClickListener(new View.OnClickListener() {
@@ -142,15 +158,9 @@ public class DescriptionActivity extends AppCompatActivity implements OnMapReady
         mDemoSlider.setDuration(4000);
         mDemoSlider.addOnPageChangeListener(this);   ///>>
     }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        //if (mListener != null) {
-        // mListener.onFragmentInteraction(uri);
-        // }
-
+    public void getAddress(LatLng latLng ){
+        new RemoteTask(Actions.GEOCODE_LOCATION,latLng,this,getApplicationContext(),false).execute();
     }
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
          mMap = googleMap;
@@ -162,7 +172,7 @@ public class DescriptionActivity extends AppCompatActivity implements OnMapReady
         final Marker marker=mMap.addMarker(markerOpt);
 
         CameraPosition cameraPosition=new CameraPosition.Builder().target(new LatLng(lat,lng))
-                .zoom(14).tilt(30).build();
+                .zoom(16).tilt(30).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -192,4 +202,93 @@ public class DescriptionActivity extends AppCompatActivity implements OnMapReady
 
     }
 
+    @Override
+    public void loginFinished(int id, Object result) {
+
+    }
+
+    @Override
+    public void registerFinished(int value, boolean externalService) {
+
+    }
+
+    @Override
+    public void searchFinished(int value, Object result) {
+
+    }
+
+    @Override
+    public void geocodeFinished(int id, Object result) {
+        if(id==1){
+            List<Address> addresses = null;
+            try{
+                addresses= (List<Address>) result;
+            }catch (Exception e){
+
+
+            }
+            if(addresses!=null){
+                String address=concate(addresses.get(0));
+                address_tv.setText(address);
+            }
+
+
+        }
+    }
+  private String concate (Address address){
+     ArrayList<String>List=new ArrayList<>();
+      if(address.getLocality()!=null){
+         List.add(address.getLocality());
+      }
+      if(address.getSubLocality()!=null){
+          List.add(address.getSubLocality());
+      }
+      if(address.getSubAdminArea()!=null){
+          List.add(address.getSubAdminArea());
+      }
+      if(address.getAdminArea()!=null){
+          List.add(address.getAdminArea());
+      }
+      if(address.getCountryName()!=null){
+          List.add(address.getCountryName());
+      }
+      String l=String.valueOf(List);
+     String h= l.replaceAll("\\[", "").replaceAll("\\]","");
+
+      return h;
+  }
+    @Override
+    public void addItem(int id) {
+
+    }
+
+    @Override
+    public void itemAdded(int id, Object result) {
+
+    }
+
+    @Override
+    public void itemRemoved(int id) {
+
+    }
+
+    @Override
+    public void searchItem(int id) {
+
+    }
+
+    @Override
+    public void profileFinished(int responce) {
+
+    }
+
+    @Override
+    public void imageUploaded(int value) {
+
+    }
+
+    @Override
+    public void myItems(Integer integer, Object result) {
+
+    }
 }

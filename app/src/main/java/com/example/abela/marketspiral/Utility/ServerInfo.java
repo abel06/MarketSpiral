@@ -6,6 +6,14 @@ package com.example.abela.marketspiral.Utility;
  */
 public final class ServerInfo {
 
-    public static final String DB_URL = "http://10.0.2.2/" ;
-
+    public static final String DB_URL = "http://192.168.43.137:80/homespiral/" ;
+    public static final String REGISTER = "register.php";
+    public static final String LOGIN = "login.php";
+    public static final String NEW_ITEM = "new_item.php";
+    public static final String REMOVE_ITEM = "remove_item.php";
+    public static final String SEARCH_ITEM="search_item.php";
+    public static final String EDIT_PROFILE="profile.php";
+    public static final String ADD_ITEM="add_item.php";
+    public static final String UPLOAD_IMAGE = "upload_image.php";
+    public static final String MY_ITEM = "my_item.php";
 }

@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.abela.marketspiral.Core.DescriptionActivity;
+import com.example.abela.marketspiral.Activities.DescriptionActivity;
 import com.example.abela.marketspiral.Decode.Home;
 import com.example.abela.marketspiral.R;
 
@@ -65,8 +65,9 @@ public class HomesAdapter extends RecyclerView.Adapter<HomesAdapter.MyViewHolder
         holder.title_tv.setText(home.getTitle());
         holder.price_tv.setText(""+home.getPrice()+" $");
         holder.owner_tv.setText(""+home.getOwner().getName());
-        holder.date_tv.setText(""+home.getAdded());
+        holder.date_tv.setText(""+home.getDate());
         //  holder.count.setText(home.getNumOfSongs() + " songs");
+
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,12 +77,22 @@ public class HomesAdapter extends RecyclerView.Adapter<HomesAdapter.MyViewHolder
                 Log.d("ab","home click "+home.getImage().getImageAtIndex(0));
             }
         });
-        // loading home cover using Glide library
 
-        Glide.with(mContext).load(home.getImage().getImageAtIndex(0).getUrl()).into(holder.thumbnail);
+        if(home.getImage().getImagesCount()>0){
+                    Log.d("ab_log","url"+home.getImage().getImageAtIndex(0).getUrl());
+            Glide.with(mContext).load(home.getImage().getImageAtIndex(0).getUrl()).into(holder.thumbnail);
+        }
+
+
+
 
     }
-
+    public void clear(){
+        homeList.clear();
+    }
+    public void addAll(ArrayList<Home>homes){
+        homeList=homes;
+    }
     private void showPopupMenu(View view) {
         // inflate menu
     }

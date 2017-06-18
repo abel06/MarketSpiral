@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.example.abela.marketspiral.Utility.ServerInfo;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +21,7 @@ public class Image implements Parcelable{
     private String url;
     public Image(String tag, String url) {
          this.tag=tag;
-         this.url=url;
+         this.url= ServerInfo.DB_URL+"/"+url;
     }
 
     protected Image(Parcel in) {
