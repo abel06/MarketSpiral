@@ -17,6 +17,7 @@ public final class Functions {
         for (String key: data.keySet()) {
 
             String value = data.get(key);
+
             if(!value.isEmpty()) {
                 if (result.isEmpty()) {
                     result += key + "=" + data.get(key);

@@ -232,7 +232,7 @@
                         android:textSize="10sp" />
 
                     <TextView
-                        android:id="@+id/price_tv"
+                        android:id="@+id/language_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"

@@ -117,7 +117,7 @@ public class DescriptionActivity extends AppCompatActivity implements OnMapReady
         });
         //-----------------------------------------------
 
-        TextView  price_tv= (TextView) findViewById(R.id.price_tv);
+        TextView  price_tv= (TextView) findViewById(R.id.language_tv);
         price_tv.setText(""+home.getPrice());
         TextView  bedroom_tv= (TextView) findViewById(R.id.bedroom_tv);
         bedroom_tv.setText(""+home.getBedroom());
